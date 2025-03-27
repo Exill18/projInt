@@ -40,7 +40,7 @@ CHANNEL_ID=your_discord_channel_id
 Splitting Videos
 Run the video_splitter.py script to split videos:
 
-python [video_splitter.py](http://_vscodecontentref_/0) <input_directory> --output-dir <output_directory>
+python [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py) <input_directory> --output-dir <output_directory>
 
 **<input_directory>**: Path to the folder containing video files.
 **--output-dir: (Optional)** Path to the folder where split videos will be saved. Defaults to split_videos.
