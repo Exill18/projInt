@@ -51,12 +51,12 @@ The bot uploads the split videos to the specified Discord channel. So make sure 
 
 ## File Structure
 
-├── [bot.py](https://github.com/Exill18/projInt/blob/main/bot.py) # Discord bot script for uploading videos <br>
-├── [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py)# Main script for splitting videos <br>
-├── ffmpeg/               # Directory containing FFmpeg binaries <br>
-├── .env                  # Environment variables (Discord token and channel ID) <br>
-├── requirements.txt      # Python dependencies <br>
-└── README.md             # Project documentation <br>
+├── [bot.py](https://github.com/Exill18/projInt/blob/main/bot.py) > Discord bot script for uploading videos <br>
+├── [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py) > Main script for splitting videos <br>
+├── ffmpeg/               > Directory containing FFmpeg binaries <br>
+├── .env                  > Environment variables (Discord token and channel ID) <br>
+├── requirements.txt      > Python dependencies <br>
+└── README.md             > Project documentation <br>
 
 
 License
