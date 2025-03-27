@@ -60,8 +60,8 @@ The bot uploads the split videos to the specified Discord channel. So make sure 
 
 ### Possible Improvements *(Not verified)*
 
-I've not explored this, but I think that its possible for the bots to have a higher file size limit if the bot owner is a Nitro User. So maybe 50 Mb's for Nitro Basic and 500 Mb's.
-Probably should be fine with just changing the target_size_mb in the [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py) to those quantities.
+I've not explored this, but I think that its possible for the bots to have a higher file size limit if the bot owner is a Nitro User. So maybe 50 Mb's for Nitro Basic and 500 Mb's regular Nitro. <br>
+Probably should be fine with just changing the target_size_mb in the [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py) to those quantities if indeed the bots have higher limit because of owner.
 
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
