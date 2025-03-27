@@ -51,15 +51,10 @@ The video_splitter.py script automatically runs the Discord bot (bot.py) after s
 ## File Structure
 
 ├── [bot.py](https://github.com/Exill18/projInt/blob/main/bot.py) # Discord bot script for uploading videos
-
 ├── [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py)# Main script for splitting videos
-
 ├── ffmpeg/               # Directory containing FFmpeg binaries
-
 ├── .env                  # Environment variables (Discord token and channel ID)
-
 ├── requirements.txt      # Python dependencies
-
 └── README.md             # Project documentation
 
 
