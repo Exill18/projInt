@@ -16,8 +16,8 @@ This project provides a tool to split large video files into smaller segments (~
 ## Installation
 1. Clone the repository:
 ```bash 
-    git clone https://github.com/Exill18/Splitter.git
-    cd Splitter
+    git clone https://github.com/Exill18/projInt.git
+    cd projInt
 ```
 
 2. Install the required Python packages:
