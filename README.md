@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 3. Download and extract FFmpeg binaries:
 
-Download FFmpeg from FFmpeg Builds(https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
+Download FFmpeg from [FFmpeg Builds](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
 Extract the contents into a folder named **ffmpeg** in the project directory.
 
 4. Create a **.env** file in the project root with the following content:
@@ -51,8 +51,8 @@ The video_splitter.py script automatically runs the Discord bot (bot.py) after s
 ## File Structure
 
 .
-├── [bot.py](http://_vscodecontentref_/2)                # Discord bot script for uploading videos
-├── [video_splitter.py](http://_vscodecontentref_/3)     # Main script for splitting videos
+├── [bot.py](https://github.com/Exill18/projInt/blob/main/bot.py)                # Discord bot script for uploading videos
+├── [video_splitter.py](https://github.com/Exill18/projInt/blob/main/video_splitter.py)     # Main script for splitting videos
 ├── ffmpeg/               # Directory containing FFmpeg binaries
 ├── .env                  # Environment variables (Discord token and channel ID)
 ├── requirements.txt      # Python dependencies
