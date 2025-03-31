@@ -32,14 +32,15 @@ def group_files_by_base(files):
     return file_groups
 
 async def send_file_group(channel, files):
-    """Send a group of files to Discord"""
-    for file in files:
-        try:
-            await channel.send(file=discord.File(str(file)))
-            print(f"Sent {file.name} to Discord")
-            file.unlink()  # Remove after sending
-        except Exception as e:
-            print(f"Failed to send {file.name}: {e}")
+    """Send a group of up to 10 files in a single Discord message"""
+    try:
+        await channel.send(files=[discord.File(str(file)) for file in files])
+        print(f"Sent {len(files)} files to Discord in one message")
+        # Remove files after sending
+        for file in files:
+            file.unlink()
+    except Exception as e:
+        print(f"Failed to send files: {e}")
 
 async def send_files():
     channel = client.get_channel(CHANNEL_ID)
@@ -58,12 +59,9 @@ async def send_files():
 
     # Send files in groups
     for base_name, files in file_groups.items():
-        if len(files) <= 10:
-            await send_file_group(channel, files)
-        else:
-            # Split into chunks of 10 files
-            for i in range(0, len(files), 10):
-                await send_file_group(channel, files[i:i+10])
+        # Split into chunks of up to 10 files
+        for i in range(0, len(files), 10):
+            await send_file_group(channel, files[i:i+10])
 
 @client.event
 async def on_ready():
