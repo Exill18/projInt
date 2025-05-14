@@ -16,7 +16,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 def group_files_by_base(files):
-    """Group files by their base name (without _part_xxx)"""
+    """Group files by their base name (without _part_xxx for videos)."""
     file_groups = defaultdict(list)
     for file in files:
         if '_part_' in file.stem:
@@ -24,15 +24,15 @@ def group_files_by_base(files):
             file_groups[base_name].append(file)
         else:
             file_groups[file.stem].append(file)
-    
-    # Sort each group by part number
+
+    # Sort each group by part number (if applicable)
     for base_name in file_groups:
-        file_groups[base_name].sort(key=lambda x: int(x.stem.rsplit('_', 1)[-1]))
-    
+        file_groups[base_name].sort(key=lambda x: x.name)
+
     return file_groups
 
 async def send_file_group(channel, files):
-    """Send a group of up to 10 files in a single Discord message"""
+    """Send a group of up to 10 files in a single Discord message."""
     try:
         await channel.send(files=[discord.File(str(file)) for file in files])
         print(f"Sent {len(files)} files to Discord in one message")

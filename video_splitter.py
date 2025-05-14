@@ -4,7 +4,7 @@ import logging
 import subprocess
 from pathlib import Path
 import math
-
+import zipfile
 
 # Configure paths
 BASE_DIR = Path(__file__).parent
@@ -13,6 +13,24 @@ FFMPEG_PATH = FFMPEG_DIR / "ffmpeg.exe"
 FFPROBE_PATH = FFMPEG_DIR / "ffprobe.exe"
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def extract_zip_files(input_dir, temp_dir):
+    """Extract all ZIP files in the input directory to a temporary directory."""
+    for zip_file in Path(input_dir).glob('*.zip'):
+        try:
+            with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                zip_ref.extractall(temp_dir)
+                logging.info(f"Extracted {zip_file} to {temp_dir}")
+        except Exception as e:
+            logging.error(f"Failed to extract {zip_file}: {str(e)}")
+
+def get_media_files(input_dir):
+    """Get all video and image files from the input directory."""
+    video_extensions = ['.mp4', '.mkv', '.avi', '.mov', '.flv', '.wmv']
+    image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff']
+    media_extensions = video_extensions + image_extensions
+
+    return [f for f in Path(input_dir).rglob('*') if f.suffix.lower() in media_extensions]
 
 def check_ffmpeg():
     if not FFMPEG_PATH.exists() or not FFPROBE_PATH.exists():
@@ -77,8 +95,8 @@ def run_bot():
         logging.error(f"Unexpected error running bot: {str(e)}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Split videos into ~10MB segments')
-    parser.add_argument('input_dir', help='Input directory containing videos')
+    parser = argparse.ArgumentParser(description='Split videos and process media files.')
+    parser.add_argument('input_dir', help='Input directory containing videos, images, or ZIP files')
     parser.add_argument('--output-dir', default='split_videos', help='Output directory')
     args = parser.parse_args()
 
@@ -86,26 +104,48 @@ def main():
         check_ffmpeg()
         input_dir = Path(args.input_dir)
         output_dir = Path(args.output_dir)
-        
+        temp_dir = Path('temp_extracted')  # Temporary directory for extracted files
+
         if not input_dir.exists():
             raise FileNotFoundError(f"Input directory not found: {input_dir}")
-        
-        output_dir.mkdir(exist_ok=True)
-        video_files = get_video_files(input_dir)
-        
-        if not video_files:
-            logging.warning("No video files found in input directory")
-            return
-        
-        for video_file in video_files:
-            try:
-                parts = split_video(video_file, output_dir)
-                logging.info(f"Created {len(parts)} parts for {video_file.name}")
-            except Exception as e:
-                logging.error(f"Failed to process {video_file.name}: {str(e)}")
 
+        output_dir.mkdir(exist_ok=True)
+        temp_dir.mkdir(exist_ok=True)
+
+        # Extract ZIP files
+        extract_zip_files(input_dir, temp_dir)
+
+        # Get all media files (videos and images)
+        media_files = get_media_files(input_dir) + get_media_files(temp_dir)
+
+        if not media_files:
+            logging.warning("No media files found in input directory")
+            return
+
+        for media_file in media_files:
+            if media_file.suffix.lower() in ['.mp4', '.mkv', '.avi', '.mov', '.flv', '.wmv']:
+                try:
+                    parts = split_video(media_file, output_dir)
+                    logging.info(f"Created {len(parts)} parts for {media_file.name}")
+                except Exception as e:
+                    logging.error(f"Failed to process {media_file.name}: {str(e)}")
+            else:
+                # Copy images to the output directory
+                try:
+                    output_path = output_dir / media_file.name
+                    output_path.write_bytes(media_file.read_bytes())
+                    logging.info(f"Copied image {media_file.name} to {output_dir}")
+                except Exception as e:
+                    logging.error(f"Failed to copy image {media_file.name}: {str(e)}")
+
+        # Run the bot to send videos and images
         run_bot()
-                
+
+        # Clean up temporary directory
+        for file in temp_dir.rglob('*'):
+            file.unlink()
+        temp_dir.rmdir()
+
     except Exception as e:
         logging.error(f"Error: {str(e)}")
 
